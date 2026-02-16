@@ -1,10 +1,17 @@
-import { Catch, ArgumentsHost, HttpException, HttpStatus } from '@nestjs/common';
+import { ArgumentsHost, Catch, HttpException, HttpStatus } from '@nestjs/common';
 import { BaseRpcExceptionFilter, RpcException } from '@nestjs/microservices';
 import { status as GrpcStatus } from '@grpc/grpc-js';
+
+/**
+ * 
+ * NON va registrato come global perché intercetta e trasforma eccezioni
+ *  che dovrebbero rimanere HTTP, rischiando di alterare/rompere le risposte REST.
+ */
 
 @Catch()
 export class GrpcExceptionFilter extends BaseRpcExceptionFilter {
   catch(exception: unknown, host: ArgumentsHost) {
+
     if (exception instanceof RpcException) {
       return super.catch(exception, host);
     }
@@ -13,20 +20,10 @@ export class GrpcExceptionFilter extends BaseRpcExceptionFilter {
       const httpStatus = exception.getStatus();
       const response = exception.getResponse() as any;
 
-      const message =
-        typeof response === 'string'
-          ? response
-          : response?.message ?? 'Error';
+      const message = normalizeMessage(response);
+      const code = mapHttpToGrpc(httpStatus);
 
-      const grpcCode = mapHttpToGrpc(httpStatus);
-
-      return super.catch(
-        new RpcException({
-          code: grpcCode,
-          message: Array.isArray(message) ? message.join(', ') : String(message),
-        }),
-        host,
-      );
+      return super.catch(new RpcException({ code, message }), host);
     }
 
     return super.catch(
@@ -34,6 +31,15 @@ export class GrpcExceptionFilter extends BaseRpcExceptionFilter {
       host,
     );
   }
+}
+
+function normalizeMessage(response: any): string {
+  const msg =
+    typeof response === 'string'
+      ? response
+      : response?.message ?? 'Error';
+
+  return Array.isArray(msg) ? msg.join(', ') : String(msg);
 }
 
 function mapHttpToGrpc(http: number): number {
