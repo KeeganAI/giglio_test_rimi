@@ -10,35 +10,28 @@ import { GrpcExceptionFilter } from '../common/filters/grpc-exception.filter';
 export class UsersGrpcController {
   constructor(private readonly users: UsersService) {}
 
-  /** CreateUser (gRPC) */
   @GrpcMethod('UsersService', 'CreateUser')
   createUser(req: CreateUserReq) {
     return this.users.create(req);
   }
 
-  /** FindAllUsers (gRPC) */
   @GrpcMethod('UsersService', 'FindAllUsers')
   async findAllUsers() {
     const items = await this.users.findAll();
     return { items };
   }
 
-  /** FindOneUser (gRPC) */
   @GrpcMethod('UsersService', 'FindOneUser')
   findOneUser(req: IdReq) {
     return this.users.findOne(req.id);
   }
 
-  /** UpdateUser (gRPC) */
   @GrpcMethod('UsersService', 'UpdateUser')
   updateUser(req: UpdateUserReq) {
     const { id, ...dto } = req;
     return this.users.update(id, dto);
   }
 
-  /**
-   * RemoveUser (gRPC)
-   */
   @GrpcMethod('UsersService', 'RemoveUser')
   async removeUser(req: IdReq) {
     await this.users.remove(req.id);
