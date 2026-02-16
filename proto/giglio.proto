@@ -1,0 +1,109 @@
+// 
+// https://github.com/forcedotcom/pub-sub-api/blob/main/pubsub_api.proto
+//
+syntax = "proto3";
+
+package giglio;
+
+import "google/protobuf/empty.proto";
+
+service UsersService {
+  rpc CreateUser (CreateUserRequest) returns (UserResponse);
+  rpc FindAllUsers (google.protobuf.Empty) returns (UsersResponse);
+  rpc FindOneUser (IdRequest) returns (UserResponse);
+  rpc UpdateUser (UpdateUserRequest) returns (UserResponse);
+  rpc RemoveUser (IdRequest) returns (google.protobuf.Empty);
+}
+
+service ProductsService {
+  rpc CreateProduct (CreateProductRequest) returns (ProductResponse);
+  rpc FindAllProducts (google.protobuf.Empty) returns (ProductsResponse);
+  rpc FindOneProduct (IdRequest) returns (ProductResponse);
+  rpc UpdateProduct (UpdateProductRequest) returns (ProductResponse);
+  rpc RemoveProduct (IdRequest) returns (google.protobuf.Empty);
+}
+
+service OrdersService {
+  rpc CreateOrderCrud (CreateOrderCrudRequest) returns (OrderResponse);
+  rpc FindAllOrders (google.protobuf.Empty) returns (OrdersResponse);
+  rpc FindOneOrder (IdRequest) returns (OrderResponse);
+  rpc UpdateOrder (UpdateOrderRequest) returns (OrderResponse);
+  rpc RemoveOrder (IdRequest) returns (google.protobuf.Empty);
+
+  rpc CreateOrder (CreateOrderRequest) returns (OrderResponse);
+}
+
+message IdRequest {
+  int32 id = 1;
+}
+
+message CreateUserRequest {
+  string name = 1;
+  string email = 2;
+}
+message UpdateUserRequest {
+  int32 id = 1;
+  string name = 2;
+  string email = 3;
+}
+message UserResponse {
+  int32 id = 1;
+  string name = 2;
+  string email = 3;
+}
+message UsersResponse {
+  repeated UserResponse items = 1;
+}
+
+message CreateProductRequest {
+  string name = 1;
+  double price = 2;
+}
+message UpdateProductRequest {
+  int32 id = 1;
+  string name = 2;
+  double price = 3;
+}
+message ProductResponse {
+  int32 id = 1;
+  string name = 2;
+  double price = 3;
+}
+message ProductsResponse {
+  repeated ProductResponse items = 1;
+}
+
+enum OrderStatus {
+  CREATED = 0;
+  PAID = 1;
+  SHIPPED = 2;
+}
+
+message CreateOrderCrudRequest {
+  int32 userId = 1;
+  repeated int32 productIds = 2;
+  OrderStatus status = 3;
+  double totalAmount = 4;
+}
+
+message CreateOrderRequest {
+  int32 userId = 1;
+  repeated int32 productIds = 2;
+}
+
+message UpdateOrderRequest {
+  int32 id = 1;
+  OrderStatus status = 2;
+}
+
+message OrderResponse {
+  int32 id = 1;
+  int32 userId = 2;
+  repeated int32 productIds = 3;
+  double totalAmount = 4;
+  OrderStatus status = 5;
+}
+
+message OrdersResponse {
+  repeated OrderResponse items = 1;
+}
