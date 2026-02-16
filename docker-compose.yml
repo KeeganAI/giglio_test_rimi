@@ -17,5 +17,19 @@ services:
     volumes:
       - giglio_mysql_data:/var/lib/mysql
 
+  app:
+    build: .
+    container_name: giglio-app
+    environment:
+      DATABASE_URL: mysql://giglio:giglio@db:3306/giglio
+      REST_PORT: 3000
+      GRPC_URL: 0.0.0.0:50051
+    ports:
+      - "3000:3000"
+      - "50051:50051"
+    depends_on:
+      db:
+        condition: service_healthy
+
 volumes:
   giglio_mysql_data:

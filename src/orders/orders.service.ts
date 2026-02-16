@@ -108,9 +108,9 @@ export class OrdersService {
       userId: order.userId,
       totalAmount: order.totalAmount,
       status: order.status,
-      products: order.items.map((it: any) => ({
-        productId: it.product.id,
-        price: it.product.price,
+      products: (order.items ?? []).map((it: any) => ({
+        productId: it.product?.id ?? it.productId,
+        price: it.product?.price,
       })),
     };
   }

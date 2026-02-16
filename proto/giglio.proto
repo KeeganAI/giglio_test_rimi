@@ -1,4 +1,5 @@
 // 
+// riferimento
 // https://github.com/forcedotcom/pub-sub-api/blob/main/pubsub_api.proto
 //
 syntax = "proto3";
@@ -24,7 +25,6 @@ service ProductsService {
 }
 
 service OrdersService {
-  rpc CreateOrderCrud (CreateOrderCrudRequest) returns (OrderResponse);
   rpc FindAllOrders (google.protobuf.Empty) returns (OrdersResponse);
   rpc FindOneOrder (IdRequest) returns (OrderResponse);
   rpc UpdateOrder (UpdateOrderRequest) returns (OrderResponse);
@@ -43,8 +43,8 @@ message CreateUserRequest {
 }
 message UpdateUserRequest {
   int32 id = 1;
-  string name = 2;
-  string email = 3;
+  optional string name = 2;
+  optional string email = 3;
 }
 message UserResponse {
   int32 id = 1;
@@ -61,8 +61,8 @@ message CreateProductRequest {
 }
 message UpdateProductRequest {
   int32 id = 1;
-  string name = 2;
-  double price = 3;
+  optional string name = 2;
+  optional double price = 3;
 }
 message ProductResponse {
   int32 id = 1;
@@ -77,13 +77,6 @@ enum OrderStatus {
   CREATED = 0;
   PAID = 1;
   SHIPPED = 2;
-}
-
-message CreateOrderCrudRequest {
-  int32 userId = 1;
-  repeated int32 productIds = 2;
-  OrderStatus status = 3;
-  double totalAmount = 4;
 }
 
 message CreateOrderRequest {
