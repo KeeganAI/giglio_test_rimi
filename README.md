@@ -96,16 +96,15 @@ curl -s http://localhost:3000/users
 ### Response attesa (esempio)
 ```json
 {
-    "id": 4,
-    "userId": 1,
-    "totalAmount": "1.5",
-    "status": "CREATED",
-    "products": [
-        {
-            "productId": 1,
-            "price": "1.5"
-        }
-    ]
+  "id": 4,
+  "userId": 1,
+  "totalAmount": 2.5,
+  "products": [
+    {
+      "productId": 1,
+      "price": 2.5
+    }
+  ]
 }
 ```
 
