@@ -74,7 +74,7 @@ curl -s http://localhost:3000/users
 ```json
 {
   "name": "Arancina ACCARNE",
-  "price": "2.5"
+  "price": 2.5
 }
 ```
 

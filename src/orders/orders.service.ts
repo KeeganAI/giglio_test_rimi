@@ -106,11 +106,11 @@ export class OrdersService {
     return {
       id: order.id,
       userId: order.userId,
-      totalAmount: order.totalAmount,
+      totalAmount: order.totalAmount?.toString?.() ?? String(order.totalAmount),
       status: order.status,
       products: (order.items ?? []).map((it: any) => ({
         productId: it.product?.id ?? it.productId,
-        price: it.product?.price,
+        price: it.product?.price?.toString?.() ?? String(it.product?.price),
       })),
     };
   }
