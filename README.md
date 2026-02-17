@@ -120,3 +120,4 @@ grpcurl -plaintext -import-path proto -proto proto/giglio.proto \
   -d '{"userId":1,"productIds":[1]}' \
   localhost:50051 giglio.OrdersService/CreateOrder
 ```
+> Nota: la response gRPC include `id`, `userId`, `totalAmount` e info su `products`. Lo `status` è gestito lato server e disponibile via REST.
