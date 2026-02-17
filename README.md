@@ -109,7 +109,8 @@ curl -s http://localhost:3000/users
 }
 ```
 
-> Nota: prima di eseguire CreateOrder assicurati di avere già creato User e Product con gli id usati.
+> Prima di creare un ordine, bisogna creare almeno 1 `User` e 1 `Product`.
+ Poi usare gli `id` restituiti dalle response (o ottenuti via GET) dentro `userId` e `productIds`.
 
 # gRPC
 
