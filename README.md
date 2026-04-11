@@ -34,6 +34,16 @@ Dalla root del progetto:
 ```bash
 docker compose up --build
 ```
+
+## Avvio locale (senza Docker)
+
+```bash
+cp .env.example .env          # configurare se necessario
+npm install
+npx prisma migrate deploy
+npm run start:dev
+```
+
 ---
 
 ## Porte e URL

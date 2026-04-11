@@ -1,7 +1,3 @@
-// 
-// riferimento
-// https://github.com/forcedotcom/pub-sub-api/blob/main/pubsub_api.proto
-//
 syntax = "proto3";
 
 package giglio;
