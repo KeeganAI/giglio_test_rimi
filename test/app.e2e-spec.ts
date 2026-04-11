@@ -193,7 +193,7 @@ describe('Orders (e2e)', () => {
 
   // ---------- DELETE /orders/:id ----------
 
-  it('DELETE /orders/:id - ordine eliminato -> 200', async () => {
+  it('DELETE /orders/:id - ordine eliminato -> 204', async () => {
     prisma.order.findUnique.mockResolvedValue({
       id: 1, userId: 1, totalAmount: 5.5, status: 'CREATED',
       items: [],
@@ -202,6 +202,6 @@ describe('Orders (e2e)', () => {
 
     await request(app.getHttpServer())
       .delete('/orders/1')
-      .expect(200);
+      .expect(204);
   });
 });

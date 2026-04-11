@@ -3,6 +3,7 @@ import {
   Controller,
   Delete,
   Get,
+  HttpCode,
   Param,
   ParseIntPipe,
   Patch,
@@ -39,7 +40,8 @@ export class OrdersController {
   }
 
   @Delete(':id')
-  remove(@Param('id', ParseIntPipe) id: number) {
-    return this.orders.remove(id);
+  @HttpCode(204)
+  async remove(@Param('id', ParseIntPipe) id: number) {
+    await this.orders.remove(id);
   }
 }
