@@ -91,6 +91,7 @@ message UpdateOrderRequest {
 message OrderProduct {
   int32 productId = 1;
   double price = 2;
+  int32 quantity = 3;
 }
 
 message OrderResponse {

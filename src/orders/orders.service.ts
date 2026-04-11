@@ -16,11 +16,18 @@ export class OrdersService {
     await this.ensureUser(dto.userId);
     const products = await this.ensureProducts(dto.productIds);
 
-    const totalCents = products.reduce((sum, p) => {
-      const n = p.price.toNumber();
-      return sum + Math.round(n * 100);
-    }, 0);
+    // raggruppa productIds per quantità (es. [1,1,2] -> {1:2, 2:1})
+    const qtyMap = new Map<number, number>();
+    for (const id of dto.productIds) {
+      qtyMap.set(id, (qtyMap.get(id) ?? 0) + 1);
+    }
 
+    // calcola totalAmount considerando le quantità
+    const priceMap = new Map(products.map((p) => [p.id, p.price.toNumber()]));
+    const totalCents = [...qtyMap.entries()].reduce(
+      (sum, [id, qty]) => sum + Math.round(priceMap.get(id)! * 100) * qty,
+      0,
+    );
     const totalAmount = totalCents / 100;
 
     const order = await this.prisma.order.create({
@@ -30,7 +37,10 @@ export class OrdersService {
         status: OrderStatus.CREATED as any,
         items: {
           createMany: {
-            data: dto.productIds.map((productId) => ({ productId })),
+            data: [...qtyMap.entries()].map(([productId, quantity]) => ({
+              productId,
+              quantity,
+            })),
           },
         },
       },
@@ -111,6 +121,7 @@ export class OrdersService {
       products: (order.items ?? []).map((it: any) => ({
         productId: it.product?.id ?? it.productId,
         price: Number(it.product?.price),
+        quantity: it.quantity ?? 1,
       })),
     };
   }
