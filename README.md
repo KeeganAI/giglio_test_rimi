@@ -1,4 +1,4 @@
-# Giglio test - Rimi
+# Giglio test
 
 ## Stack
 - **NestJS** (ultima versione stabile)
